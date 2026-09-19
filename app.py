@@ -120,5 +120,3 @@ elif page == "📈 Forecast":
     st.plotly_chart(fig, use_container_width=True)
 
     st.info(f" Model validation: tested on the last 6 known months, this model's average error (MAPE) was **{mape:.1f}%**. Forecast shown above is refit on all available data ({len(monthly_sales)} months, 2011–2014).")
-
-    st.warning("This forecast is illustrative rather than fully validated. It's based on only 2 years of historical data, which is the minimum needed to detect a seasonal pattern. More years of data would be needed to confirm real-world accuracy.")
