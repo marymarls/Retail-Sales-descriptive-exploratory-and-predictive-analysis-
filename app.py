@@ -22,11 +22,31 @@ def load_data():
 df = load_data()
 
 st.sidebar.title("🛍️ Retail Sales Intelligence")
-page = st.sidebar.radio("Navigate to:", ["🗺️ Map", "👥 Segments", "📈 Forecast"])
+page = st.sidebar.radio("Navigate to:", ["ℹ️ About", "🗺️ Map", "👥 Segments", "📈 Forecast"])
 
 st.title(page)
 
-if page == "🗺️ Map":
+
+if page == "ℹ️ About":
+    st.markdown("""
+    ### Retail Sales Intelligence
+    A geographic and predictive analysis of global retail performance, built on the **Global Superstore** dataset (2011–2014, ~20,000 orders across 141 countries).
+
+    **What this app does:**
+    - 🗺️ **Map** — Visualizes total sales and profit by country, animated across years, to identify strong and weak markets.
+    - 👥 **Segments** — Uses K-Means clustering to group customers into 4 behavioral segments based on spending, profit, and discount patterns — surfacing which customers drive real profit vs. which are unprofitable despite high sales.
+    - 📈 **Forecast** — Uses Holt-Winters Exponential Smoothing to project sales 6 months ahead, validated against historical hold-out data (7.9% MAPE).
+
+    **Methodology & limitations:**
+    - Data is simulated/sample retail data, not from a real company — customer names are reused across countries and shouldn't be treated as unique individual identifiers.
+    - The forecast is a demonstration of time-series methodology; production forecasting would benefit from more granular (e.g. regional) models and longer history.
+
+    **Tools used:** Python, Pandas, Plotly, Scikit-learn, Statsmodels, Streamlit
+
+    Built by Mariam Touati as a personal project applying data analytics and machine learning to retail intelligence.
+    """)
+
+elif page == "🗺️ Map":
     country_year = df.groupby(['country', 'year'], as_index=False).agg(
         total_sales=('sales', 'sum'),
         total_profit=('profit', 'sum'),
