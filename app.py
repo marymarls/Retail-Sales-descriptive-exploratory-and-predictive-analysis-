@@ -90,3 +90,34 @@ elif page == "👥 Segments":
 
     st.subheader("Segment Averages")
     st.dataframe(customer_summary.groupby('segment_name')[features].mean().round(2))
+
+
+
+elif page == "📈 Forecast":
+    monthly_sales = df.groupby(df['order_date'].dt.to_period('M'))['sales'].sum().reset_index()
+    monthly_sales['order_date'] = monthly_sales['order_date'].dt.to_timestamp()
+
+    model = ExponentialSmoothing(
+        monthly_sales['sales'],
+        trend='add',
+        seasonal='add',
+        seasonal_periods=12
+    )
+    results = model.fit()
+    forecast = results.forecast(6)
+
+    future_dates = pd.date_range(
+        start=monthly_sales['order_date'].iloc[-1] + pd.DateOffset(months=1),
+        periods=6,
+        freq='MS'
+    )
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=monthly_sales['order_date'], y=monthly_sales['sales'],
+                              mode='lines', name='Historical Sales'))
+    fig.add_trace(go.Scatter(x=future_dates, y=forecast.values,
+                              mode='lines', name='Forecast', line=dict(dash='dash')))
+    fig.update_layout(title='Global Sales: Historical + 6-Month Forecast')
+    st.plotly_chart(fig, use_container_width=True)
+
+    st.warning("⚠️ This forecast is illustrative rather than fully validated — based on only 2 years of historical data, which is the minimum needed to detect a seasonal pattern. More years of data would be needed to confirm real-world accuracy.")
