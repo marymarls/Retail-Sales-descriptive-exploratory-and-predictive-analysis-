@@ -97,27 +97,28 @@ elif page == "📈 Forecast":
     monthly_sales = df.groupby(df['order_date'].dt.to_period('M'))['sales'].sum().reset_index()
     monthly_sales['order_date'] = monthly_sales['order_date'].dt.to_timestamp()
 
-    model = ExponentialSmoothing(
-        monthly_sales['sales'],
-        trend='add',
-        seasonal='add',
-        seasonal_periods=12
-    )
-    results = model.fit()
-    forecast = results.forecast(6)
+    train = monthly_sales.iloc[:-6]
+    test = monthly_sales.iloc[-6:]
 
-    future_dates = pd.date_range(
-        start=monthly_sales['order_date'].iloc[-1] + pd.DateOffset(months=1),
-        periods=6,
-        freq='MS'
-    )
+    model = ExponentialSmoothing(train['sales'], trend='add', seasonal='add', seasonal_periods=12)
+    results = model.fit()
+    test_forecast = results.forecast(6)
+
+    mae = (test['sales'].values - test_forecast.values)
+    mape = (abs(mae) / test['sales'].values).mean() * 100
+
+    full_model = ExponentialSmoothing(monthly_sales['sales'], trend='add', seasonal='add', seasonal_periods=12)
+    full_results = full_model.fit()
+    future_forecast = full_results.forecast(6)
+
+    future_dates = pd.date_range(start=monthly_sales['order_date'].iloc[-1] + pd.DateOffset(months=1), periods=6, freq='MS')
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=monthly_sales['order_date'], y=monthly_sales['sales'],
-                              mode='lines', name='Historical Sales'))
-    fig.add_trace(go.Scatter(x=future_dates, y=forecast.values,
-                              mode='lines', name='Forecast', line=dict(dash='dash')))
+    fig.add_trace(go.Scatter(x=monthly_sales['order_date'], y=monthly_sales['sales'], mode='lines', name='Historical Sales'))
+    fig.add_trace(go.Scatter(x=future_dates, y=future_forecast.values, mode='lines', name='Forecast', line=dict(dash='dash')))
     fig.update_layout(title='Global Sales: Historical + 6-Month Forecast')
     st.plotly_chart(fig, use_container_width=True)
+
+    st.info(f" Model validation: tested on the last 6 known months, this model's average error (MAPE) was **{mape:.1f}%**. Forecast shown above is refit on all available data ({len(monthly_sales)} months, 2011–2014).")
 
     st.warning("This forecast is illustrative rather than fully validated. It's based on only 2 years of historical data, which is the minimum needed to detect a seasonal pattern. More years of data would be needed to confirm real-world accuracy.")
