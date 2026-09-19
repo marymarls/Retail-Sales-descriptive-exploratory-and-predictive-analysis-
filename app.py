@@ -25,3 +25,24 @@ st.sidebar.title("🛍️ Retail Sales Intelligence")
 page = st.sidebar.radio("Navigate to:", ["🗺️ Map", "👥 Segments", "📈 Forecast"])
 
 st.title(page)
+
+if page == "🗺️ Map":
+    country_year = df.groupby(['country', 'year'], as_index=False).agg(
+        total_sales=('sales', 'sum'),
+        total_profit=('profit', 'sum'),
+        order_count=('order_id', 'count')
+    )
+
+    fig = px.choropleth(
+        country_year,
+        locations="country",
+        locationmode="country names",
+        color="total_sales",
+        color_continuous_scale="OrRd",
+        animation_frame="year",
+        hover_data={"total_profit": ":.0f", "order_count": True},
+        title="Total Sales by Country Over Time"
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    st.caption("This map shows, for each country, total sales revenue generated from products purchased by customers located in that country, aggregated by year.")
