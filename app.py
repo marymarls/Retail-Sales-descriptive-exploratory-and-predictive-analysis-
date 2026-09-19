@@ -32,6 +32,8 @@ if page == "🗺️ Map":
         total_profit=('profit', 'sum'),
         order_count=('order_id', 'count')
     )
+    country_year['year'] = country_year['year'].astype(int)
+    country_year = country_year.sort_values('year')
 
     fig = px.choropleth(
         country_year,
@@ -40,6 +42,7 @@ if page == "🗺️ Map":
         color="total_sales",
         color_continuous_scale="OrRd",
         animation_frame="year",
+        category_orders={"year": sorted(country_year['year'].unique())},
         hover_data={"total_profit": ":.0f", "order_count": True},
         title="Total Sales by Country Over Time"
     )
