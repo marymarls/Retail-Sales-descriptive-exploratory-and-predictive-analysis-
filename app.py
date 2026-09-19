@@ -67,13 +67,13 @@ elif page == "👥 Segments":
     kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
     customer_summary['segment_cluster'] = kmeans.fit_predict(scaled_features)
 
-    segment_labels = {
-        0: "Unprofitable Discount-Driven",
-        1: "Core Regular Customers",
-        2: "High-Value VIP",
-        3: "Efficient Small-Spenders"
-    }
-    customer_summary['segment_name'] = customer_summary['segment_cluster'].map(segment_labels)
+    # Dynamically rank clusters by average profit, then average sales, to assign consistent labels
+    cluster_stats = customer_summary.groupby('segment_cluster')[['total_profit', 'total_sales']].mean()
+    cluster_stats = cluster_stats.sort_values('total_profit')
+
+    ordered_labels = ["Unprofitable Discount-Driven", "Efficient Small-Spenders", "Core Regular Customers", "High-Value VIP"]
+    label_map = dict(zip(cluster_stats.index, ordered_labels))
+    customer_summary['segment_name'] = customer_summary['segment_cluster'].map(label_map)
 
     fig = px.scatter(
         customer_summary,
