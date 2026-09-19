@@ -49,3 +49,44 @@ if page == "🗺️ Map":
     st.plotly_chart(fig, use_container_width=True)
 
     st.caption("This map shows, for each country, total sales revenue generated from products purchased by customers located in that country, aggregated by year.")
+
+
+elif page == "👥 Segments":
+    customer_summary = df.groupby(['customer_name', 'country'], as_index=False).agg(
+        total_sales=('sales', 'sum'),
+        total_profit=('profit', 'sum'),
+        avg_discount=('discount', 'mean'),
+        order_count=('order_id', 'nunique'),
+        total_quantity=('quantity', 'sum')
+    )
+
+    features = ['total_sales', 'total_profit', 'avg_discount', 'order_count', 'total_quantity']
+    scaler = StandardScaler()
+    scaled_features = scaler.fit_transform(customer_summary[features])
+
+    kmeans = KMeans(n_clusters=4, random_state=42, n_init=10)
+    customer_summary['segment_cluster'] = kmeans.fit_predict(scaled_features)
+
+    segment_labels = {
+        0: "Unprofitable Discount-Driven",
+        1: "Core Regular Customers",
+        2: "High-Value VIP",
+        3: "Efficient Small-Spenders"
+    }
+    customer_summary['segment_name'] = customer_summary['segment_cluster'].map(segment_labels)
+
+    fig = px.scatter(
+        customer_summary,
+        x="total_sales",
+        y="total_profit",
+        color="segment_name",
+        size="order_count",
+        hover_data=["customer_name", "country", "avg_discount"],
+        title="Customer Segments: Sales vs Profit"
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    st.caption("Customers are grouped into 4 behavioral segments based on sales, profit, discount usage, order frequency, and quantity purchased.")
+
+    st.subheader("Segment Averages")
+    st.dataframe(customer_summary.groupby('segment_name')[features].mean().round(2))
