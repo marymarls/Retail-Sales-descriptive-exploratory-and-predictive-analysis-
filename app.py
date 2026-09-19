@@ -116,7 +116,7 @@ elif page == "📈 Forecast":
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=monthly_sales['order_date'], y=monthly_sales['sales'], mode='lines', name='Historical Sales'))
     fig.add_trace(go.Scatter(x=future_dates, y=future_forecast.values, mode='lines', name='Forecast', line=dict(dash='dash')))
-    fig.update_layout(title='Global Sales: Historical + 6-Month Forecast')
+    fig.update_layout(title='Global Sales: Historical + Forecast')
     st.plotly_chart(fig, use_container_width=True)
 
     st.info(f" Model validation: tested on the last 6 known months, this model's average error (MAPE) was **{mape:.1f}%**. Forecast shown above is refit on all available data ({len(monthly_sales)} months, 2011–2014).")
