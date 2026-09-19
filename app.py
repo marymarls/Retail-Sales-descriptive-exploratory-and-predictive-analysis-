@@ -120,4 +120,4 @@ elif page == "📈 Forecast":
     fig.update_layout(title='Global Sales: Historical + 6-Month Forecast')
     st.plotly_chart(fig, use_container_width=True)
 
-    st.warning("⚠️ This forecast is illustrative rather than fully validated — based on only 2 years of historical data, which is the minimum needed to detect a seasonal pattern. More years of data would be needed to confirm real-world accuracy.")
+    st.warning("This forecast is illustrative rather than fully validated. It's based on only 2 years of historical data, which is the minimum needed to detect a seasonal pattern. More years of data would be needed to confirm real-world accuracy.")
