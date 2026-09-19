@@ -15,7 +15,8 @@ def load_data():
     df['sales'] = df['sales'].astype(str).str.replace(',', '', regex=False)
     df['sales'] = pd.to_numeric(df['sales'], errors='coerce')
     df = df.dropna(subset=['sales', 'country'])
-    ddf['order_date'] = pd.to_datetime(df['order_date'])
+    df['order_date'] = pd.to_datetime(df['order_date'], format='%m/%d/%Y', errors='coerce')
+    df = df.dropna(subset=['order_date'])
     return df
 
 df = load_data()
