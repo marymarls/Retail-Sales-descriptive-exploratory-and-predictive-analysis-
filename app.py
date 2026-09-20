@@ -22,12 +22,12 @@ def load_data():
 df = load_data()
 
 st.sidebar.title("Retail Analytics")
-page = st.sidebar.radio("Navigate to:", ["ℹ️ About", "🗺️ Map", "👥 Segments", "📊 Sales Analysis"])
+page = st.sidebar.radio("Navigate to:", ["About", "Map", "Segments", "Sales Analysis"])
 
 st.title(page)
 
 
-if page == "ℹ️ About":
+if page == "About":
 
     st.title("Retail Analytics")
 
@@ -237,7 +237,7 @@ if page == "ℹ️ About":
     """)
 
 
-elif page == "🗺️ Map":
+elif page == "Map":
     country_year = df.groupby(['country', 'year'], as_index=False).agg(
         total_sales=('sales', 'sum'),
         total_profit=('profit', 'sum'),
@@ -262,7 +262,7 @@ elif page == "🗺️ Map":
     st.caption("This map shows, for each country, total sales revenue generated from products purchased by customers located in that country, aggregated by year.")
 
 
-elif page == "👥 Segments":
+elif page == "Segments":
 
     
 # 1. CUSTOMER-LEVEL AGGREGATION
@@ -753,7 +753,7 @@ elif page == "👥 Segments":
 
 
 
-elif page == "📊 Sales Analysis":
+elif page == "Sales Analysis":
 
     
 # 1. MONTHLY SALES AGGREGATION
