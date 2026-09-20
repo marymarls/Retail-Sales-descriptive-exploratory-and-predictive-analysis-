@@ -21,7 +21,7 @@ def load_data():
 
 df = load_data()
 
-st.sidebar.title("Retail Analytics")
+st.sidebar.title("Retail Sales Analytics")
 page = st.sidebar.radio("Navigate to:", ["About", "Map", "Segments", "Sales Analysis"])
 
 st.title(page)
@@ -29,12 +29,12 @@ st.title(page)
 
 if page == "About":
 
-    st.title("Retail Analytics")
+    st.title("Retail Sales Analytics")
 
     st.markdown("""
    
 
-    **Retail Analytics** is an interactive business intelligence
+    **Retail Sales Analytics** is an interactive business intelligence
     application designed to explore historical retail performance,
     customer behavior, and sales patterns using the **Global Superstore**
     dataset.
