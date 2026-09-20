@@ -21,7 +21,7 @@ def load_data():
 
 df = load_data()
 
-st.sidebar.title("🛍️ Retail Sales Intelligence")
+st.sidebar.title("Retail Analytics")
 page = st.sidebar.radio("Navigate to:", ["ℹ️ About", "🗺️ Map", "👥 Segments", "📊 Sales Analysis"])
 
 st.title(page)
@@ -29,12 +29,12 @@ st.title(page)
 
 if page == "ℹ️ About":
 
-    st.title("About Retail Sales Intelligence")
+    st.title("Retail Analytics")
 
     st.markdown("""
-    ## Retail Sales Intelligence
+   
 
-    **Retail Sales Intelligence** is an interactive business intelligence
+    **Retail Analytics** is an interactive business intelligence
     application designed to explore historical retail performance,
     customer behavior, and sales patterns using the **Global Superstore**
     dataset.
@@ -57,7 +57,7 @@ if page == "ℹ️ About":
     with col1:
 
         st.markdown("""
-        ### 🗺️ Geographic Analysis
+        ### 1. Geographic Analysis
 
         Explore sales and profit performance across countries and
         observe how market performance changes over time.
@@ -73,7 +73,7 @@ if page == "ℹ️ About":
     with col2:
 
         st.markdown("""
-        ### 👥 Customer Segmentation
+        ### 2. Customer Segmentation
 
         Uses **K-Means clustering** to identify four behavioral customer
         profiles based on:
@@ -93,7 +93,7 @@ if page == "ℹ️ About":
     with col3:
 
         st.markdown("""
-        ### 📊 Sales Analysis
+        ### 3. Sales Analysis
 
         Examines historical sales patterns through:
 
@@ -110,7 +110,7 @@ if page == "ℹ️ About":
     with col4:
 
         st.markdown("""
-        ### 💡 Business Intelligence
+        ### 4. Business Intelligence
 
         The application transforms analytical results into business
         insights through:
@@ -128,7 +128,7 @@ if page == "ℹ️ About":
     # where did i get my dataset?
     
 
-    st.subheader("where did i get my dataset?")
+    st.subheader("Where did i get my dataset?")
 
     st.markdown("""
     The application uses the **Global Superstore** dataset, covering
@@ -145,7 +145,7 @@ if page == "ℹ️ About":
     # methodology i followed
     
 
-    st.subheader("Methodology")
+    st.subheader("Methodology I followed")
 
     st.markdown("""
     ### Customer Segmentation
