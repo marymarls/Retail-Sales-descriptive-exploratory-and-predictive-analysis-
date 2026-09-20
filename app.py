@@ -28,22 +28,218 @@ st.title(page)
 
 
 if page == "ℹ️ About":
+
+    st.title("About Retail Sales Intelligence")
+
     st.markdown("""
-    ### Retail Sales Intelligence
-    A geographic and predictive analysis of global retail performance, built on the **Global Superstore** dataset (2011–2014, ~20,000 orders across 141 countries).
+    ## Retail Sales Intelligence
 
-    **What this app does:**
-    - 🗺️ **Map** : Visualizes total sales and profit by country, animated across years, to identify strong and weak markets.
-    - 👥 **Segments** : Uses K-Means clustering to group customers into 4 behavioral segments based on spending, profit, and discount patterns — surfacing which customers drive real profit vs. which are unprofitable despite high sales.
-    - 📊 **Sales Analysis** : Uses Holt-Winters Exponential Smoothing to project sales 6 months ahead, validated against historical hold-out data (7.9% MAPE).
+    **Retail Sales Intelligence** is an interactive business intelligence
+    application designed to explore historical retail performance,
+    customer behavior, and sales patterns using the **Global Superstore**
+    dataset.
 
-    **Methodology & limitations:**
-    - Data is simulated/sample retail data, **NOT** from a **REAL** company, customer names are reused across countries and shouldn't be treated as unique individual identifiers.
-
-    **Tools used:** Python, Pandas, Plotly, Scikit-learn, Statsmodels, Streamlit
-
-    Built by Mariam Touati as a personal project applying data analytics and machine learning to retail intelligence.
+    The application combines **data analysis, visualization, and
+    unsupervised machine learning** to transform transactional data into
+    business-oriented insights.
     """)
+
+    st.divider()
+
+    
+    # project overview
+    
+
+    st.subheader("What this application does")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.markdown("""
+        ### 🗺️ Geographic Analysis
+
+        Explore sales and profit performance across countries and
+        observe how market performance changes over time.
+
+        The interactive map helps identify:
+
+        - High-performing markets
+        - Lower-performing markets
+        - Geographic differences in profitability
+        - Changes in performance across years
+        """)
+
+    with col2:
+
+        st.markdown("""
+        ### 👥 Customer Segmentation
+
+        Uses **K-Means clustering** to identify four behavioral customer
+        profiles based on:
+
+        - Total sales
+        - Total profit
+        - Average discount
+        - Order frequency
+        - Quantity purchased
+
+        The segments are interpreted as behavioral customer profiles,
+        rather than verified unique individuals.
+        """)
+
+    col3, col4 = st.columns(2)
+
+    with col3:
+
+        st.markdown("""
+        ### 📊 Sales Analysis
+
+        Examines historical sales patterns through:
+
+        - Monthly sales trends
+        - Yearly performance
+        - Year-over-year growth
+        - Recurring monthly patterns
+        - Highest and lowest observed periods
+
+        This page focuses on **descriptive analysis rather than
+        forecasting**.
+        """)
+
+    with col4:
+
+        st.markdown("""
+        ### 💡 Business Intelligence
+
+        The application transforms analytical results into business
+        insights through:
+
+        - KPI indicators
+        - Segment comparisons
+        - Sales and profit contribution
+        - Interactive customer exploration
+        - Automatically generated observations
+        """)
+
+    st.divider()
+
+    
+    # where did i get my dataset?
+    
+
+    st.subheader("where did i get my dataset?")
+
+    st.markdown("""
+    The application uses the **Global Superstore** dataset, covering
+    approximately **2011–2014** and containing around **20,000 orders
+    across 141 countries**.
+    """)
+
+    st.info(
+        "The dataset is a public/sample retail dataset and does not "
+        "represent the operations of a real company."
+    )
+
+   
+    # methodology i followed
+    
+
+    st.subheader("Methodology")
+
+    st.markdown("""
+    ### Customer Segmentation
+
+    Customer profiles are created by grouping transactions using the
+    combination of **customer name and country**.
+
+    The resulting behavioral profiles are standardized using
+    `StandardScaler` and segmented using **K-Means clustering with
+    4 clusters**.
+
+    The four resulting profiles are interpreted according to their
+    observed sales, profitability, discount behavior, order frequency,
+    and purchase volume.
+
+    ### Sales Analysis
+
+    Sales are aggregated at the monthly and yearly levels to examine
+    historical trends and recurring patterns.
+
+    No future sales values are predicted in the current version of the
+    application.
+    """)
+
+    
+    # LIMITATIONS
+   
+
+    st.subheader("Data Limitations")
+
+    st.warning("""
+    **Important interpretation notes:**
+
+    - The dataset is sample/public retail data and is not connected to
+      a real company's operational systems.
+    - Customer names may be reused across countries. Therefore,
+      customer-level analysis uses the combination of **customer name
+      + country** as a behavioral profile identifier.
+    - Customer segments should therefore be interpreted as
+      **customer-country behavioral profiles**, not verified individual
+      customers.
+    - Historical patterns shown in the application describe the
+      available dataset and should not automatically be interpreted as
+      predictions of future performance.
+    """)
+
+   
+    # TECHNOLOGIES
+    
+
+    st.subheader("Technologies")
+
+    tech_col1, tech_col2, tech_col3 = st.columns(3)
+
+    with tech_col1:
+        st.markdown("""
+        **Data & Analysis**
+
+        - Python
+        - Pandas
+        - NumPy
+        """)
+
+    with tech_col2:
+        st.markdown("""
+        **Machine Learning**
+
+        - Scikit-learn
+        - StandardScaler
+        - K-Means clustering
+        """)
+
+    with tech_col3:
+        st.markdown("""
+        **Visualization & App**
+
+        - Plotly
+        - Streamlit
+        """)
+
+    st.divider()
+
+    
+    # About me
+    
+
+    st.subheader("Project")
+
+    st.markdown("""
+    Built by **Mariam Touati** as a personal project exploring the
+    intersection of **Business Intelligence, data analytics,
+    visualization, and machine learning**.
+    """)
+
 
 elif page == "🗺️ Map":
     country_year = df.groupby(['country', 'year'], as_index=False).agg(
