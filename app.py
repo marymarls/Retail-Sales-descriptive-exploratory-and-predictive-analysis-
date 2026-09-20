@@ -712,48 +712,22 @@ elif page == "Segments":
 
     # KPI EXPLANATIONS
 
-    st.markdown(
-        """
-        <div style="
-            color: #888;
-            font-size: 0.82rem;
-            margin-top: -10px;
-            margin-bottom: 20px;
-            line-height: 1.4;
-        ">
+    # KPI EXPLANATIONS
 
-            <div style="
-                display: flex;
-                justify-content: space-between;
-                text-align: center;
-            ">
-
-                <span style="width: 20%;">
-                    → How large is the segment?
-                </span>
-
-                <span style="width: 20%;">
-                    → How important is it commercially?
-                </span>
-
-                <span style="width: 20%;">
-                    → How profitable is the segment?
-                </span>
-
-                <span style="width: 20%;">
-                    → How engaged/frequent are they?
-                </span>
-
-                <span style="width: 20%;">
-                    → How much discounting is associated with them?
-                </span>
-
-            </div>
-
+st.markdown(
+    """
+    <div style="color: #888; font-size: 0.82rem; margin-top: -10px; margin-bottom: 20px;">
+        <div style="display: flex; justify-content: space-between; text-align: center;">
+            <div style="width: 20%;">→ How large is the segment?</div>
+            <div style="width: 20%;">→ How important is it commercially?</div>
+            <div style="width: 20%;">→ How profitable is the segment?</div>
+            <div style="width: 20%;">→ How engaged/frequent are they?</div>
+            <div style="width: 20%;">→ How much discounting is associated with them?</div>
         </div>
-        """,
-        unsafe_allow_html=True
-    )
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 
     # ------------------------------------------------------------
