@@ -73,10 +73,9 @@ elif page == "🗺️ Map":
 
 elif page == "👥 Segments":
 
-    # ============================================================
-    # 1. CUSTOMER-LEVEL AGGREGATION
-    # ============================================================
-
+    
+# 1. CUSTOMER-LEVEL AGGREGATION
+   
     customer_summary = df.groupby(
         ['customer_name', 'country'],
         as_index=False
@@ -88,9 +87,9 @@ elif page == "👥 Segments":
         total_quantity=('quantity', 'sum')
     )
 
-    # ============================================================
-    # 2. CUSTOMER PROFIT MARGIN
-    # ============================================================
+    
+# 2. CUSTOMER PROFIT MARGIN
+    
 
     customer_summary['profit_margin'] = (
         customer_summary['total_profit']
@@ -98,10 +97,9 @@ elif page == "👥 Segments":
         * 100
     )
 
-    # ============================================================
-    # 3. K-MEANS CLUSTERING
-    # ============================================================
-
+    
+# 3. K-MEANS CLUSTERING
+   
     features = [
         'total_sales',
         'total_profit',
@@ -125,9 +123,9 @@ elif page == "👥 Segments":
         kmeans.fit_predict(scaled_features)
     )
 
-    # ============================================================
-    # 4. DYNAMIC SEGMENT LABELS
-    # ============================================================
+   
+ # 4. DYNAMIC SEGMENT LABELS
+    
 
     cluster_stats = (
         customer_summary
@@ -152,9 +150,9 @@ elif page == "👥 Segments":
         .map(label_map)
     )
 
-    # ============================================================
-    # 5. PAGE HEADER
-    # ============================================================
+    
+# 5. PAGE HEADER
+    
 
     st.title("Customer Intelligence")
 
@@ -164,9 +162,9 @@ elif page == "👥 Segments":
         "and quantity purchased."
     )
 
-    # ============================================================
-    # 6. EXECUTIVE KPIs
-    # ============================================================
+    
+# 6. EXECUTIVE KPIs
+    
 
     total_profiles = len(customer_summary)
     total_sales = customer_summary['total_sales'].sum()
@@ -201,10 +199,10 @@ elif page == "👥 Segments":
 
     st.divider()
 
-    # ============================================================
-    # 7. SEGMENT SUMMARY TABLE
-    # ============================================================
+    
+# 7. SEGMENT SUMMARY TABLE
 
+    
     segment_summary = (
         customer_summary
         .groupby('segment_name')
@@ -235,9 +233,9 @@ elif page == "👥 Segments":
         * 100
     )
 
-    # ============================================================
-    # 8. SEGMENT DISTRIBUTION
-    # ============================================================
+    
+# 8. SEGMENT DISTRIBUTION
+    
 
     st.subheader("Customer Profile Distribution")
 
@@ -285,9 +283,9 @@ elif page == "👥 Segments":
         use_container_width=True
     )
 
-    # ============================================================
-    # 9. BUSINESS CONTRIBUTION
-    # ============================================================
+    
+# 9. BUSINESS CONTRIBUTION
+    
 
     st.subheader("Business Contribution by Segment")
 
@@ -313,9 +311,9 @@ elif page == "👥 Segments":
         use_container_width=True
     )
 
-    # ============================================================
-    # 10. AUTOMATIC BUSINESS INSIGHTS
-    # ============================================================
+    
+# 10. AUTOMATIC BUSINESS INSIGHTS
+    
 
     st.subheader("Key Business Insights")
 
@@ -371,9 +369,9 @@ elif page == "👥 Segments":
             f"**{core['avg_sales']:,.0f}**."
         )
 
-    # ============================================================
-    # 11. SEGMENT EXPLORER
-    # ============================================================
+    
+# 11. SEGMENT EXPLORER
+    
 
     st.divider()
 
@@ -395,9 +393,9 @@ elif page == "👥 Segments":
             customer_summary['segment_name'] == selected_segment
         ]
 
-    # ============================================================
-    # 12. SELECTED SEGMENT KPIs
-    # ============================================================
+   
+ # 12. SELECTED SEGMENT KPIs
+   
 
     selected_profiles = len(filtered_customers)
 
@@ -442,9 +440,9 @@ elif page == "👥 Segments":
         f"{selected_avg_discount * 100:.1f}%"
     )
 
-    # ============================================================
-    # 13. SALES VS PROFIT DRILL-DOWN
-    # ============================================================
+    
+# 13. SALES VS PROFIT DRILL-DOWN
+    
 
     st.subheader("Customer-Level Sales vs Profit")
 
@@ -473,9 +471,9 @@ elif page == "👥 Segments":
         use_container_width=True
     )
 
-    # ============================================================
-    # 14. DISCOUNT VS PROFITABILITY
-    # ============================================================
+   
+ # 14. DISCOUNT VS PROFITABILITY
+    
 
     st.subheader("Discount vs Profitability")
 
@@ -506,9 +504,9 @@ elif page == "👥 Segments":
         use_container_width=True
     )
 
-    # ============================================================
-    # 15. SEGMENT PROFILE
-    # ============================================================
+   
+ # 15. SEGMENT PROFILE
+
 
     st.subheader("Segment Profile")
 
@@ -530,9 +528,9 @@ elif page == "👥 Segments":
         use_container_width=True
     )
 
-    # ============================================================
+    
     # 16. METHODOLOGY
-    # ============================================================
+    
 
     with st.expander("ℹ️ Segmentation methodology"):
 
@@ -564,30 +562,290 @@ elif page == "👥 Segments":
 
 
 
-elif page == "📈 Forecast":
-    monthly_sales = df.groupby(df['order_date'].dt.to_period('M'))['sales'].sum().reset_index()
-    monthly_sales['order_date'] = monthly_sales['order_date'].dt.to_timestamp()
+elif page == "📊 Sales Analysis":
 
-    train = monthly_sales.iloc[:-6]
-    test = monthly_sales.iloc[-6:]
+    
+# 1. MONTHLY SALES AGGREGATION
 
-    model = ExponentialSmoothing(train['sales'], trend='add', seasonal='add', seasonal_periods=12)
-    results = model.fit()
-    test_forecast = results.forecast(6)
 
-    mae = (test['sales'].values - test_forecast.values)
-    mape = (abs(mae) / test['sales'].values).mean() * 100
+    monthly_sales = (
+        df.groupby(df['order_date'].dt.to_period('M'))['sales']
+        .sum()
+        .reset_index()
+    )
 
-    full_model = ExponentialSmoothing(monthly_sales['sales'], trend='add', seasonal='add', seasonal_periods=12)
-    full_results = full_model.fit()
-    future_forecast = full_results.forecast(6)
+    monthly_sales['order_date'] = (
+        monthly_sales['order_date'].dt.to_timestamp()
+    )
 
-    future_dates = pd.date_range(start=monthly_sales['order_date'].iloc[-1] + pd.DateOffset(months=1), periods=6, freq='MS')
+    
+# 2. BASIC SALES METRICS
 
-    fig = go.Figure()
-    fig.add_trace(go.Scatter(x=monthly_sales['order_date'], y=monthly_sales['sales'], mode='lines', name='Historical Sales'))
-    fig.add_trace(go.Scatter(x=future_dates, y=future_forecast.values, mode='lines', name='Forecast', line=dict(dash='dash')))
-    fig.update_layout(title='Global Sales: Historical + Forecast')
-    st.plotly_chart(fig, use_container_width=True)
+    
+    total_sales = monthly_sales['sales'].sum()
+    average_monthly_sales = monthly_sales['sales'].mean()
 
-    st.info(f" Model validation: tested on the last 6 known months, this model's average error (MAPE) was **{mape:.1f}%**. Forecast shown above is refit on all available data ({len(monthly_sales)} months, 2011–2014).")
+    best_month = monthly_sales.loc[
+        monthly_sales['sales'].idxmax()
+    ]
+
+    worst_month = monthly_sales.loc[
+        monthly_sales['sales'].idxmin()
+    ]
+
+    
+# 3. PAGE HEADER
+    
+
+    st.title("Sales Trends & Analysis")
+
+    st.caption(
+        "Descriptive analysis of historical sales patterns, "
+        "monthly performance, seasonality, and growth."
+    )
+
+
+# 4. KPI CARDS
+    
+
+    col1, col2, col3, col4 = st.columns(4)
+
+    col1.metric(
+        "Total Sales",
+        f"{total_sales:,.0f}"
+    )
+
+    col2.metric(
+        "Average Monthly Sales",
+        f"{average_monthly_sales:,.0f}"
+    )
+
+    col3.metric(
+        "Best Month",
+        best_month['order_date'].strftime("%b %Y")
+    )
+
+    col4.metric(
+        "Lowest Month",
+        worst_month['order_date'].strftime("%b %Y")
+    )
+
+    st.divider()
+
+    
+# 5. MONTHLY SALES TREND
+    
+
+    st.subheader("Monthly Sales Trend")
+
+    fig = px.line(
+        monthly_sales,
+        x='order_date',
+        y='sales',
+        markers=True,
+        title="Monthly Sales Performance",
+        labels={
+            'order_date': 'Month',
+            'sales': 'Sales'
+        }
+    )
+
+    fig.update_layout(
+        hovermode='x unified'
+    )
+
+    st.plotly_chart(
+        fig,
+        use_container_width=True
+    )
+
+   
+# 6. YEARLY PERFORMANCE
+    
+
+    yearly_sales = (
+        df.groupby(df['order_date'].dt.year)['sales']
+        .sum()
+        .reset_index()
+    )
+
+    yearly_sales.columns = ['year', 'sales']
+
+    yearly_sales['growth'] = (
+        yearly_sales['sales'].pct_change() * 100
+    )
+
+    st.subheader("Yearly Sales Performance")
+
+    fig_year = px.bar(
+        yearly_sales,
+        x='year',
+        y='sales',
+        text='sales',
+        title="Total Sales by Year",
+        labels={
+            'year': 'Year',
+            'sales': 'Sales'
+        }
+    )
+
+    fig_year.update_traces(
+        texttemplate='%{text:,.0f}',
+        textposition='outside'
+    )
+
+    st.plotly_chart(
+        fig_year,
+        use_container_width=True
+    )
+
+    
+# 7. MONTHLY SEASONAL PATTERN
+    
+
+    monthly_sales['month'] = (
+        monthly_sales['order_date'].dt.month
+    )
+
+    monthly_sales['month_name'] = (
+        monthly_sales['order_date'].dt.strftime('%b')
+    )
+
+    seasonal_pattern = (
+        monthly_sales
+        .groupby(
+            ['month', 'month_name'],
+            as_index=False
+        )['sales']
+        .mean()
+        .sort_values('month')
+    )
+
+    st.subheader("Average Sales by Month")
+
+    fig_season = px.bar(
+        seasonal_pattern,
+        x='month_name',
+        y='sales',
+        title="Average Monthly Sales Pattern",
+        labels={
+            'month_name': 'Month',
+            'sales': 'Average Sales'
+        }
+    )
+
+    st.plotly_chart(
+        fig_season,
+        use_container_width=True
+    )
+
+    
+# 8. AUTOMATIC BUSINESS INSIGHTS
+   
+
+    highest_season_month = seasonal_pattern.loc[
+        seasonal_pattern['sales'].idxmax()
+    ]
+
+    lowest_season_month = seasonal_pattern.loc[
+        seasonal_pattern['sales'].idxmin()
+    ]
+
+    st.subheader("Key Sales Insights")
+
+    insight_col1, insight_col2 = st.columns(2)
+
+    with insight_col1:
+
+        st.info(
+            f"**Highest observed month:** "
+            f"{best_month['order_date'].strftime('%B %Y')} "
+            f"with sales of "
+            f"**{best_month['sales']:,.0f}**."
+        )
+
+        st.success(
+            f"**Strongest recurring month:** "
+            f"{highest_season_month['month_name']} "
+            f"has the highest average sales across the "
+            f"available years."
+        )
+
+    with insight_col2:
+
+        st.warning(
+            f"**Lowest observed month:** "
+            f"{worst_month['order_date'].strftime('%B %Y')} "
+            f"with sales of "
+            f"**{worst_month['sales']:,.0f}**."
+        )
+
+        st.info(
+            f"**Lowest recurring month:** "
+            f"{lowest_season_month['month_name']} "
+            f"has the lowest average sales across the "
+            f"available years."
+        )
+
+    
+# 9. YEAR-OVER-YEAR GROWTH TABLE
+    
+
+    st.subheader("Year-over-Year Performance")
+
+    yearly_display = yearly_sales.copy()
+
+    yearly_display['sales'] = (
+        yearly_display['sales'].round(0)
+    )
+
+    yearly_display['growth'] = (
+        yearly_display['growth'].round(1)
+    )
+
+    yearly_display['growth'] = (
+        yearly_display['growth'].apply(
+            lambda x: f"{x:.1f}%"
+            if pd.notna(x)
+            else "—"
+        )
+    )
+
+    yearly_display.columns = [
+        "Year",
+        "Total Sales",
+        "YoY Growth"
+    ]
+
+    st.dataframe(
+        yearly_display,
+        use_container_width=True,
+        hide_index=True
+    )
+
+    
+# 10. METHODOLOGY
+    
+
+    with st.expander("ℹ️ Analysis methodology"):
+
+        st.write(
+            """
+            This page focuses on descriptive analysis rather than
+            forecasting.
+
+            Monthly sales are aggregated from the order date and
+            analyzed over the available historical period.
+
+            The analysis examines:
+
+            • Monthly sales trends
+            • Yearly sales performance
+            • Year-over-year growth
+            • Recurring monthly sales patterns
+            • Highest and lowest observed periods
+
+            No future sales values are predicted. The results describe
+            historical patterns present in the dataset.
+            """
+        )
