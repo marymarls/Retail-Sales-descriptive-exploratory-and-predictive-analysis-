@@ -759,35 +759,21 @@ elif page == "Segments":
 
     # HOW TO INTERPRET THE SCATTERPLOT
 
-    st.markdown(
-        """
-        <div style="
-            color: #888;
-            font-size: 0.85rem;
-            line-height: 1.6;
-            margin-top: -5px;
-        ">
+    st.caption("How to interpret the scatterplot:")
 
-            <b style="color: #666;">High sales + high profit</b><br>
-            Potentially valuable profiles.
-            <br><br>
-
-            <b style="color: #666;">High sales + low/negative profit</b><br>
-            Potentially problematic profiles.
-            <br><br>
-
-            <b style="color: #666;">Low sales + positive profit</b><br>
-            Small but efficient profiles.
-            <br><br>
-
-            <b style="color: #666;">Low sales + negative profit</b><br>
-            Low-value and potentially unprofitable profiles.
-
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
+    st.markdown("""
+    **High sales + high profit**  
+    Potentially valuable profiles.
+    
+    **High sales + low/negative profit**  
+    Potentially problematic profiles.
+    
+    **Low sales + positive profit**  
+    Small but efficient profiles.
+    
+    **Low sales + negative profit**  
+    Low-value and potentially unprofitable profiles.
+    """)
 
     # ------------------------------------------------------------
     # 14. DISCOUNT VS PROFITABILITY
@@ -795,21 +781,9 @@ elif page == "Segments":
 
     st.subheader("Discount Behavior vs Profitability")
 
-    st.markdown(
-        """
-        <div style="
-            color: #888;
-            font-size: 0.9rem;
-            margin-bottom: 10px;
-        ">
-
-            <b style="color: #666;">Business question:</b>
-            Does higher discounting appear to be associated with lower
-            profitability across customer segments?
-
-        </div>
-        """,
-        unsafe_allow_html=True
+    st.caption(
+    "Business question: Does higher discounting appear to be associated "
+    "with lower profitability across customer segments?"
     )
 
     discount_profit = (
