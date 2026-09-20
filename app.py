@@ -83,9 +83,6 @@ if page == "ℹ️ About":
         - Average discount
         - Order frequency
         - Quantity purchased
-
-        The segments are interpreted as behavioral customer profiles,
-        rather than verified unique individuals.
         """)
 
     col3, col4 = st.columns(2)
@@ -103,8 +100,7 @@ if page == "ℹ️ About":
         - Recurring monthly patterns
         - Highest and lowest observed periods
 
-        This page focuses on **descriptive analysis rather than
-        forecasting**.
+        This page focuses on **descriptive analysis**.
         """)
 
     with col4:
@@ -137,8 +133,8 @@ if page == "ℹ️ About":
     """)
 
     st.info(
-        "The dataset is a public/sample retail dataset and does not "
-        "represent the operations of a real company."
+        "The dataset is a public/sample retail dataset and DOES NOT"
+        "represent the operations of a REAL company."
     )
 
    
