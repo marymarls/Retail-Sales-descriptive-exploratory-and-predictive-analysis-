@@ -22,7 +22,7 @@ def load_data():
 df = load_data()
 
 st.sidebar.title("🛍️ Retail Sales Intelligence")
-page = st.sidebar.radio("Navigate to:", ["ℹ️ About", "🗺️ Map", "👥 Segments", "📈 Forecast"])
+page = st.sidebar.radio("Navigate to:", ["ℹ️ About", "🗺️ Map", "👥 Segments", "📊 Sales Analysis"])
 
 st.title(page)
 
@@ -35,11 +35,10 @@ if page == "ℹ️ About":
     **What this app does:**
     - 🗺️ **Map** : Visualizes total sales and profit by country, animated across years, to identify strong and weak markets.
     - 👥 **Segments** : Uses K-Means clustering to group customers into 4 behavioral segments based on spending, profit, and discount patterns — surfacing which customers drive real profit vs. which are unprofitable despite high sales.
-    - 📈 **Forecast** : Uses Holt-Winters Exponential Smoothing to project sales 6 months ahead, validated against historical hold-out data (7.9% MAPE).
+    - 📊 **Sales Analysis** : Uses Holt-Winters Exponential Smoothing to project sales 6 months ahead, validated against historical hold-out data (7.9% MAPE).
 
     **Methodology & limitations:**
-    - Data is simulated/sample retail data, not from a real company, customer names are reused across countries and shouldn't be treated as unique individual identifiers.
-    - The forecast is a demonstration of time-series methodology; production forecasting would benefit from more granular (e.g. regional) models and longer history.
+    - Data is simulated/sample retail data, **NOT** from a **REAL** company, customer names are reused across countries and shouldn't be treated as unique individual identifiers.
 
     **Tools used:** Python, Pandas, Plotly, Scikit-learn, Statsmodels, Streamlit
 
